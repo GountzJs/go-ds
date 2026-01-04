@@ -1,50 +1,53 @@
 package lineal
 
-type Stack struct {
-	data     []int
+type stack struct {
+	items    []int
 	capacity uint
 }
 
-func (s *Stack) SetCapacity(value uint) {
-	s.capacity = value
+func NewStack(capacity uint) *stack {
+	return &stack{
+		capacity: capacity,
+		items:    make([]int, capacity),
+	}
 }
 
-func (s Stack) IsFull() bool {
-	return len(s.data) == int(s.capacity)
+func (s stack) IsFull() bool {
+	return len(s.items) == int(s.capacity)
 }
 
-func (s Stack) IsEmpty() bool {
-	return len(s.data) == 0
+func (s stack) IsEmpty() bool {
+	return len(s.items) == 0
 }
 
-func (s *Stack) Push(item int) {
+func (s *stack) Push(item int) {
 	if s.IsFull() {
 		return
 	}
 
-	s.data = append(s.data, item)
+	s.items = append(s.items, item)
 }
 
-func (s *Stack) Pop() int {
+func (s *stack) Pop() int {
 	if s.IsEmpty() {
 		return -1
 	}
 
-	var lastIndex = len(s.data) - 1
+	var lastIndex = len(s.items) - 1
 
-	var lastValue = s.data[lastIndex]
+	var lastValue = s.items[lastIndex]
 
-	s.data = s.data[:lastIndex]
+	s.items = s.items[:lastIndex]
 
 	return lastValue
 }
 
-func (s Stack) Peek() int {
+func (s stack) Peek() int {
 	if s.IsEmpty() {
 		return -1
 	}
 
-	var lastIndex = len(s.data) - 1
+	var lastIndex = len(s.items) - 1
 
-	return s.data[lastIndex]
+	return s.items[lastIndex]
 }

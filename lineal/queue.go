@@ -7,11 +7,12 @@ type queue struct {
 	tail     int
 }
 
-func NewQueue(capacity int) *queue {
+func NewQueue(capacity uint) *queue {
 	return &queue{
-		items: make([]int, capacity),
-		head:  -1,
-		tail:  -1,
+		capacity: capacity,
+		items:    make([]int, capacity),
+		head:     -1,
+		tail:     -1,
 	}
 }
 
