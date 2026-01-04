@@ -1,51 +1,68 @@
 package lineal
 
-type Queue struct {
+type queue struct {
 	items    []int
 	capacity uint
+	head     int
+	tail     int
 }
 
-func (q *Queue) SetCapacity(value uint) {
-	q.capacity = value
-}
-
-func (q Queue) IsEmpty() bool {
-	return len(q.items) == 0
-}
-
-func (q Queue) IsFull() bool {
-	return uint(len(q.items)) == q.capacity
-}
-
-func (q Queue) Peek() int {
-	if q.IsEmpty() {
-		return -1
+func NewQueue(capacity int) *queue {
+	return &queue{
+		items: make([]int, capacity),
+		head:  -1,
+		tail:  -1,
 	}
-	var lastIndex = len(q.items) - 1
-	var item = q.items[lastIndex]
-	return item
 }
 
-func (q Queue) Enqueue(value int) {
-	if q.IsEmpty() {
+func (q queue) IsEmpty() bool {
+	return q.head == -1 && q.tail == -1
+}
+
+func (q queue) IsFull() bool {
+	return q.tail == int(q.capacity-1)
+}
+
+func (q *queue) Enqueue(value int) {
+	if q.IsFull() {
 		return
 	}
 
-	var temp = []int{value}
+	if q.head == -1 {
+		var initialIndex = 0
+		q.head = initialIndex
+		q.tail = initialIndex
+		q.items[initialIndex] = value
+		return
+	}
 
-	q.items = append(temp, q.items...)
+	q.tail = q.tail + 1
+	q.items[q.tail] = value
 }
 
-func (q *Queue) Dequeue() int {
+func (q *queue) Dequeue() int {
 	if q.IsEmpty() {
 		return -1
 	}
 
-	var lastIndex = len(q.items) - 1
+	if q.head == q.tail {
+		var resetIndex = -1
+		var valueOfIndex = q.items[q.head]
+		q.head = resetIndex
+		q.tail = resetIndex
+		return valueOfIndex
+	}
 
-	var item = q.items[lastIndex]
+	var valueOfIndex = q.items[q.head]
+	q.head = q.head + 1
 
-	q.items = q.items[:lastIndex]
+	return valueOfIndex
+}
 
-	return item
+func (q queue) Peek() int {
+	if q.IsEmpty() {
+		return -1
+	}
+
+	return q.items[q.head]
 }
