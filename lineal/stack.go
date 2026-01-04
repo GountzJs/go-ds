@@ -1,14 +1,14 @@
 package lineal
 
-type stack struct {
-	items    []int
+type stack[T any] struct {
+	items    []T
 	capacity uint
 }
 
-func NewStack(capacity uint) *stack {
-	return &stack{
+func NewStack[T any](capacity uint) *stack[T] {
+	return &stack[T]{
 		capacity: capacity,
-		items:    make([]int, capacity),
+		items:    make([]T, 0, capacity),
 	}
 }
 
@@ -20,17 +20,19 @@ func (s stack) IsEmpty() bool {
 	return len(s.items) == 0
 }
 
-func (s *stack) Push(item int) {
+func (s *stack) Push(item T) error {
 	if s.IsFull() {
-		return
+		return errors.New("Stack is full")
 	}
 
 	s.items = append(s.items, item)
+	return nil
 }
 
-func (s *stack) Pop() int {
+func (s *stack) Pop() (T, error) {
 	if s.IsEmpty() {
-		return -1
+		var zero T
+		return zero, errors.New("Stack is empty")
 	}
 
 	var lastIndex = len(s.items) - 1
@@ -39,15 +41,16 @@ func (s *stack) Pop() int {
 
 	s.items = s.items[:lastIndex]
 
-	return lastValue
+	return lastValue, nil
 }
 
-func (s stack) Peek() int {
+func (s stack) Peek() (T, error) {
 	if s.IsEmpty() {
-		return -1
+		var zero T
+		return zero, errors.New("Stack is empty")
 	}
 
 	var lastIndex = len(s.items) - 1
 
-	return s.items[lastIndex]
+	return s.items[lastIndex], nil
 }
