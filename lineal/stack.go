@@ -1,5 +1,7 @@
 package lineal
 
+import "errors"
+
 type stack[T any] struct {
 	items    []T
 	capacity uint
