@@ -14,15 +14,15 @@ func NewStack[T any](capacity uint) *stack[T] {
 	}
 }
 
-func (s stack) IsFull() bool {
+func (s stack[T]) IsFull() bool {
 	return len(s.items) == int(s.capacity)
 }
 
-func (s stack) IsEmpty() bool {
+func (s stack[T]) IsEmpty() bool {
 	return len(s.items) == 0
 }
 
-func (s *stack) Push(item T) error {
+func (s *stack[T]) Push(item T) error {
 	if s.IsFull() {
 		return errors.New("Stack is full")
 	}
@@ -31,7 +31,7 @@ func (s *stack) Push(item T) error {
 	return nil
 }
 
-func (s *stack) Pop() (T, error) {
+func (s *stack[T]) Pop() (T, error) {
 	if s.IsEmpty() {
 		var zero T
 		return zero, errors.New("Stack is empty")
@@ -46,7 +46,7 @@ func (s *stack) Pop() (T, error) {
 	return lastValue, nil
 }
 
-func (s stack) Peek() (T, error) {
+func (s stack[T]) Peek() (T, error) {
 	if s.IsEmpty() {
 		var zero T
 		return zero, errors.New("Stack is empty")

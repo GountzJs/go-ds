@@ -3,7 +3,7 @@ package lineal
 import "errors"
 
 type queue[T any] struct {
-	items    []int
+	items    []T
 	capacity uint
 	head     int
 	tail     int
@@ -36,10 +36,10 @@ func (q queue[T]) Peek() (T, error) {
 }
 
 func (q queue[T]) Size() int {
-    if q.IsEmpty() {
-        return 0
-    }
-    return q.tail - q.head + 1
+	if q.IsEmpty() {
+		return 0
+	}
+	return q.tail - q.head + 1
 }
 
 func (q *queue[T]) Enqueue(value T) error {
